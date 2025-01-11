@@ -1,0 +1,1 @@
+# This project will teach the fundmentals of working with aws services using the aws CLI and pyhton

@@ -63,4 +63,27 @@ Note: Session_Token is needed when using temporary credentials
 | **Customization**     | Controls the region, profile, and credentials for AWS interactions. | Full control, allows fine-grained configuration.             | Less control, but much simpler for common tasks.            |
 | **Examples**          | Managing session configurations like AWS credentials and region.| Starting EC2 instances, managing IAM roles.                 | Managing S3 buckets, EC2 instance state, DynamoDB tables.   |
 
-## Note that by default if a session is not created and a client or resource object is created automatically a session is created.
+# Note that by default if a session is not created and a client or resource object is created automatically a session is created.
+
+- # s3 bucket creation parameters table
+
+| **Parameter**               | **Description**                                                      |
+|-----------------------------|----------------------------------------------------------------------|
+| `Bucket`                    | The name of the bucket (required).                                   |
+| `CreateBucketConfiguration` | Specify the region for the bucket (optional, if different from default). |
+| `ACL`                        | Access control list, e.g., `private`, `public-read`, etc. (optional). |
+| `GrantFullControl`           | Grants full control to the specified AWS account (optional).         |
+| `VersioningConfiguration`   | Enable or disable versioning for the bucket (optional).             |
+| `Tagging`                    | Tags to apply to the bucket (optional).                              |
+| `ObjectLockEnabledForBucket`| Enable object lock (optional).                                       |
+
+
+- # s3 file upload table parameters 
+| **Parameter**              | **Description**                                                                 |
+|----------------------------|---------------------------------------------------------------------------------|
+| `Filename`                 | The local path to the file you want to upload (e.g., `'path/to/your/file.txt'`).|
+| `Bucket`                   | The name of the S3 bucket where the file will be uploaded.                     |
+| `Key`                      | The name (or path) of the file in the S3 bucket. For example: `'folder/filename.txt'`.|
+| `ExtraArgs`                | Optional dictionary for additional arguments (e.g., `ACL`, `Metadata`).        |
+| `ACL`                      | Optional: The access control list (ACL) for the file. Defaults to `private`. Other options include `public-read`, `authenticated-read`, etc.|
+| `Metadata`                 | Optional: Custom metadata that will be associated with the uploaded object.    |

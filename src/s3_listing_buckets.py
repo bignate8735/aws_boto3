@@ -19,7 +19,7 @@ def list_buckets(region):
         #List all buckets
         response = s3_client.list_buckets()
         buckets = response.get('Buckets',[])
-        print(f'Buckets available: {response}')
+        print(f'Buckets available: {buckets}')
     
     except ClientError as e:
         logging.error(e)
@@ -27,5 +27,5 @@ def list_buckets(region):
     return True
 
 # Call the function
-list_buckets()
+list_buckets('us-east-1')
 

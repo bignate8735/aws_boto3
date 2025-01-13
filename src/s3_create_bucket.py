@@ -33,12 +33,12 @@ def create_bucket(bucket_name, region):                         # Function to cr
         
 
 # Call the function to create the bucket and enable versioning
-create_bucket()
-
+create_bucket(bucket_name='abouttodelete', region= 'us-east-1')
+bucket_name='abouttodelete'
 # Enable versioning on the bucket
 s3_client =session.client('s3')
 versioning_response = s3_client.put_bucket_versioning(
-    Bucket='bucket_name',
+    Bucket= bucket_name,
     VersioningConfiguration={
         'Status': 'Enabled'  # Enable versioning on the bucket
     }

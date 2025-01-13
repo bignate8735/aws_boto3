@@ -3,16 +3,11 @@ import logging
 import boto3.session
 from botocore.exceptions import ClientError
 
-# Start an s3 client session
+# Initialize session
 session = boto3.Session()
-
 
 # Initialize logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-
-# Bucket Details
-region = 'us-east-1'
 
 
 # defining a function to listing the buckets in an s3
@@ -32,5 +27,5 @@ def list_buckets(region):
     return True
 
 # Call the function
-list_buckets(region = 'us-east-1')
+list_buckets()
 

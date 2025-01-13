@@ -2,20 +2,14 @@ import boto3
 import logging
 from botocore.exceptions import ClientError
 
-
-
-
+# Initialize session
 session = boto3.Session()
 
+# Initialize logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Initialize an S3 client using the session
-s3_client = session.client('s3')
 
-bucket_name = 'natebucket007'                  # Replace with your desired unique bucket name
-region = 'us-east-1'                           # Specify your preferred region here
-
-                                                    
-def create_bucket(bucket_name, region):        # Function to create S3 bucket with error handling
+def create_bucket(bucket_name, region):                         # Function to create S3 bucket with error handling
     try:
         if region == 'us-east-1':
             s3_client = session.client('s3')
@@ -29,26 +23,27 @@ def create_bucket(bucket_name, region):        # Function to create S3 bucket wi
                 'LocationConstrainst': region                   # Location configuration for non-us-east-1 regions
             },  
             ACL = 'private'                                                                                                  #   Specifies the region for the bucket (mandatory for all regions except 'us-east-1')
-        )        
+            )        
         print(f'Bucket {bucket_name} created successfully in {region}')
 
     except ClientError as e:
-         logging.error(e)
-         return False
+        logging.error(e)
+        return False
     return True 
         
 
 # Call the function to create the bucket and enable versioning
-create_bucket(bucket_name, region)
+create_bucket()
 
 # Enable versioning on the bucket
+s3_client =session.client('s3')
 versioning_response = s3_client.put_bucket_versioning(
-    Bucket=bucket_name,
+    Bucket='bucket_name',
     VersioningConfiguration={
         'Status': 'Enabled'  # Enable versioning on the bucket
-            }
-        )
-print(f'Versioning enabled on {bucket_name}')
+    }
+)
+print(f'Versioning enabled on bucket')
 
 
 

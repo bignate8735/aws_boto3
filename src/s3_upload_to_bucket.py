@@ -11,10 +11,6 @@ session = boto3.Session()
 # Initialize logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Define the file to upload details
-#file_path = '/Users/nathaniel/Desktop/dataset/annual-enterprise-survey-2023-financial-year-provisional.csv'        # Local file path
-#bucket_name = 'natebucket007'           # S3 bucket name
-#s3_object_name =    # S3 object name (path in the bucket)
 
 def upload_file(file_path, bucket_name, s3_object_name):   
     try:
@@ -36,7 +32,8 @@ def upload_file(file_path, bucket_name, s3_object_name):
     return True
     # Handle any errors that occur during upload
     print(f"Error uploading file: {e}")
-
-upload_file('/Users/nathaniel/Desktop/dataset/annual-enterprise-survey-2023-financial-year-provisional.csv','natebucket007', None)
+    
+#call the function
+upload_file()
 
   

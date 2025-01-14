@@ -87,3 +87,62 @@ Note: Session_Token is needed when using temporary credentials
 | `ExtraArgs`                | Optional dictionary for additional arguments (e.g., `ACL`, `Metadata`).        |
 | `ACL`                      | Optional: The access control list (ACL) for the file. Defaults to `private`. Other options include `public-read`, `authenticated-read`, etc.|
 | `Metadata`                 | Optional: Custom metadata that will be associated with the uploaded object.    |
+
+- # A table of all s3_client operations and their methods and parameters 
+
+# S3 Operations and Methods
+
+| **Category**        | **Operation**                     | **Method**                              | **Key Parameters**                                                                 |
+|----------------------|-----------------------------------|-----------------------------------------|------------------------------------------------------------------------------------|
+| **Bucket Operations** | Create a bucket                  | `create_bucket()`                       | `Bucket` (name), `CreateBucketConfiguration` (region constraint)                  |
+|                      | Delete a bucket                  | `delete_bucket()`                       | `Bucket` (name)                                                                   |
+|                      | List buckets                     | `list_buckets()`                        | None                                                                              |
+|                      | Get bucket location              | `get_bucket_location()`                 | `Bucket` (name)                                                                   |
+|                      | Get bucket ACL                   | `get_bucket_acl()`                      | `Bucket` (name)                                                                   |
+|                      | Put bucket ACL                   | `put_bucket_acl()`                      | `Bucket`, `ACL` (public-read, private, etc.)                                      |
+|                      | Get bucket policy                | `get_bucket_policy()`                   | `Bucket`                                                                          |
+|                      | Put bucket policy                | `put_bucket_policy()`                   | `Bucket`, `Policy` (JSON string)                                                 |
+|                      | Delete bucket policy             | `delete_bucket_policy()`                | `Bucket`                                                                          |
+|                      | Get bucket lifecycle config      | `get_bucket_lifecycle_configuration()`  | `Bucket`                                                                          |
+|                      | Put bucket lifecycle config      | `put_bucket_lifecycle_configuration()`  | `Bucket`, `LifecycleConfiguration`                                               |
+|                      | Delete bucket lifecycle config   | `delete_bucket_lifecycle()`             | `Bucket`                                                                          |
+|                      | Enable bucket versioning         | `put_bucket_versioning()`               | `Bucket`, `VersioningConfiguration`                                              |
+|                      | Get bucket versioning status     | `get_bucket_versioning()`               | `Bucket`                                                                          |
+|                      | Get bucket encryption            | `get_bucket_encryption()`               | `Bucket`                                                                          |
+|                      | Put bucket encryption            | `put_bucket_encryption()`               | `Bucket`, `ServerSideEncryptionConfiguration`                                     |
+|                      | Delete bucket encryption         | `delete_bucket_encryption()`            | `Bucket`                                                                          |
+
+| **Object Operations** | Upload an object                 | `put_object()`                          | `Bucket`, `Key`, `Body`, `ACL`, `ContentType`, etc.                               |
+|                      | Download an object               | `get_object()`                          | `Bucket`, `Key`, `Range`, `ResponseContentType`, etc.                             |
+|                      | Delete an object                 | `delete_object()`                       | `Bucket`, `Key`                                                                   |
+|                      | Delete multiple objects          | `delete_objects()`                      | `Bucket`, `Delete` (list of `Objects`)                                           |
+|                      | Copy an object                   | `copy_object()`                         | `Bucket`, `CopySource`, `Key`, `ACL`, etc.                                        |
+|                      | List objects in a bucket         | `list_objects_v2()`                     | `Bucket`, `Prefix`, `MaxKeys`, `ContinuationToken`                                |
+|                      | List object versions             | `list_object_versions()`                | `Bucket`, `Prefix`, `KeyMarker`, `VersionIdMarker`, `MaxKeys`                    |
+|                      | Get object metadata              | `head_object()`                         | `Bucket`, `Key`                                                                   |
+|                      | Get object tagging               | `get_object_tagging()`                  | `Bucket`, `Key`                                                                   |
+|                      | Put object tagging               | `put_object_tagging()`                  | `Bucket`, `Key`, `Tagging`                                                       |
+|                      | Delete object tagging            | `delete_object_tagging()`               | `Bucket`, `Key`                                                                   |
+
+| **Multipart Uploads** | Initiate multipart upload        | `create_multipart_upload()`             | `Bucket`, `Key`, `ContentType`, etc.                                              |
+|                      | Upload a part                    | `upload_part()`                         | `Bucket`, `Key`, `UploadId`, `PartNumber`, `Body`                                 |
+|                      | List parts                       | `list_parts()`                          | `Bucket`, `Key`, `UploadId`, `PartNumberMarker`                                   |
+|                      | Complete multipart upload        | `complete_multipart_upload()`           | `Bucket`, `Key`, `UploadId`, `MultipartUpload`                                    |
+|                      | Abort multipart upload           | `abort_multipart_upload()`              | `Bucket`, `Key`, `UploadId`                                                       |
+
+| **Presigned URL**     | Generate a presigned URL         | `generate_presigned_url()`              | `ClientMethod`, `Params`, `ExpiresIn`, `HttpMethod`                               |
+|                      | Generate a presigned POST policy | `generate_presigned_post()`             | `Bucket`, `Key`, `Fields`, `Conditions`, `ExpiresIn`                              |
+
+| **Bucket Analytics**  | Get analytics config            | `get_bucket_analytics_configuration()`  | `Bucket`, `Id`                                                                    |
+|                      | Put analytics config             | `put_bucket_analytics_configuration()`  | `Bucket`, `Id`, `AnalyticsConfiguration`                                         |
+|                      | Delete analytics config          | `delete_bucket_analytics_configuration()` | `Bucket`, `Id`                                                                   |
+|                      | Get metrics config               | `get_bucket_metrics_configuration()`    | `Bucket`, `Id`                                                                    |
+|                      | Put metrics config               | `put_bucket_metrics_configuration()`    | `Bucket`, `Id`, `MetricsConfiguration`                                           |
+|                      | Delete metrics config            | `delete_bucket_metrics_configuration()` | `Bucket`, `Id`                                                                    |
+
+| **Other Operations**  | Select object content           | `select_object_content()`               | `Bucket`, `Key`, `Expression`, `ExpressionType`, etc.                             |
+|                      | Restore archived object          | `restore_object()`                      | `Bucket`, `Key`, `RestoreRequest`                                                |
+|                      | Get bucket notification config   | `get_bucket_notification_configuration()` | `Bucket`                                                                         |
+|                      | Put bucket notification config   | `put_bucket_notification_configuration()` | `Bucket`, `NotificationConfiguration`                                           |
+|                      | Get bucket logging               | `get_bucket_logging()`                  | `Bucket`                                                                          |
+|                      | Put bucket logging               | `put_bucket_logging()`                  | `Bucket`, `BucketLoggingStatus`                                                  |

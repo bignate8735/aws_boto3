@@ -168,3 +168,35 @@ Note: Session_Token is needed when using temporary credentials
 | Put bucket notification config   | `put_bucket_notification_configuration()` | `Bucket`, `NotificationConfiguration`                          | Sets the notification configuration for a bucket.                              |
 | Get bucket logging               | `get_bucket_logging()`                  | `Bucket`                                                        | Retrieves the logging configuration of a bucket.                               |
 | Put bucket logging               | `put_bucket_logging()`                  | `Bucket`, `BucketLoggingStatus`                                | Sets the logging configuration for a bucket.                                   |
+
+
+## Category 1: Data Access Operations
+
+| **Operation**         | **Description**                                                                                  | **Key Use Cases**                                                   | **Key Parameters**                                                                                     | **Output**                                                                 |
+|------------------------|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| **`get_object`**       | Retrieves an object from S3, including its content and metadata, for in-memory processing.       | - Real-time processing of small files<br>- Streaming data for analysis | `Bucket`, `Key`, `Range` (optional), `ResponseCacheControl`, `IfMatch`, `IfNoneMatch`                  | Dictionary with metadata and file-like object (`response['Body']`)          |
+| **`select_object_content`** | Retrieves and processes data from an S3 object using SQL expressions.                                       | - Querying structured data (e.g., CSV, JSON) stored in S3<br>- Extracting subsets of large files | `Bucket`, `Key`, `Expression`, `ExpressionType`, `InputSerialization`, `OutputSerialization`          | Event stream containing query results                                      |
+| **`head_object`**      | Retrieves metadata about an object in S3 without accessing the object data itself.               | - Checking if an object exists<br>- Validating metadata (e.g., size, content type) | `Bucket`, `Key`, `IfMatch`, `IfNoneMatch`, `IfModifiedSince`, `IfUnmodifiedSince`                     | Metadata dictionary (e.g., size, content type, last modified, etc.)         |
+| **`list_objects_v2`**  | Lists objects in an S3 bucket, providing their metadata (but not their content).                 | - Enumerating objects in a bucket<br>- Building a manifest for processing files | `Bucket`, `Prefix` (optional), `MaxKeys` (optional), `Delimiter`, `ContinuationToken`                 | List of object metadata (key names, size, etc.)                             |
+
+---
+
+## Category 2: File Transfer Operations
+
+| **Operation**          | **Description**                                                                                  | **Key Use Cases**                                                   | **Key Parameters**                                                                                     | **Output**                                                                 |
+|-------------------------|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| **`download_file`**     | Downloads an object from S3 and saves it as a local file on disk.                                | - Saving files locally<br>- Backups and migrations                   | `Bucket`, `Key`, `Filename`, `ExtraArgs` (optional), `Config` (optional)                               | Saves the object to a specified local file path                            |
+| **`download_fileobj`**  | Streams an object from S3 to a file-like object provided by the user.                           | - Streaming downloads<br>- Writing directly to a custom file-like object | `Bucket`, `Key`, `Fileobj`, `ExtraArgs` (optional), `Config` (optional)                               | Writes content to a provided file-like object                              |
+| **`upload_file`**       | Uploads a local file to an S3 bucket.                                                           | - Storing files in S3<br>- Cloud storage for large files             | `Filename`, `Bucket`, `Key`, `ExtraArgs` (optional), `Config` (optional)                              | Uploads the specified file to S3                                           |
+| **`upload_fileobj`**    | Streams data from a file-like object to S3 and stores it as an object in a bucket.               | - Streaming uploads<br>- Writing directly from a custom file-like object | `Fileobj`, `Bucket`, `Key`, `ExtraArgs` (optional), `Config` (optional)                              | Uploads content from the provided file-like object                         |
+
+---
+
+## Key Differences in Context
+
+| **Aspect**             | **Data Access Operations**                                   | **File Transfer Operations**                              |
+|-------------------------|-------------------------------------------------------------|----------------------------------------------------------|
+| **Primary Focus**       | Accessing object data for in-memory use or metadata lookup  | Moving files between local storage and S3                |
+| **Output Location**     | In-memory (object data or metadata)                         | Local file system or custom file-like object             |
+| **Best For**            | Real-time data processing, small object handling            | Large files, persistent storage                          |
+| **Example Operations**  | `get_object`, `head_object`, `select_object_content`        | `download_file`, `download_fileobj`, `upload_file`, `upload_fileobj` |
